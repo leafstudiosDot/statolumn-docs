@@ -1,41 +1,27 @@
 import type { MetaFunction } from "@remix-run/node";
+import React, {useEffect, useState} from 'react'
+import {marked} from "marked";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
+    { title: "Statolumn Docs" },
+    { name: "description", content: "Statolumn Documentation for Developers" },
   ];
 };
 
 export default function Index() {
+  const [md, setMD] = useState('')
+  useEffect(() => {
+    fetch('/mddocs/intro.md')
+    .then((res) => res.text())
+    .then((text) => {
+      setMD(marked(text))
+    })
+  }, [])
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
-      <h1>Welcome to Remix</h1>
-      <ul>
-        <li>
-          <a
-            target="_blank"
-            href="https://remix.run/tutorials/blog"
-            rel="noreferrer"
-          >
-            15m Quickstart Blog Tutorial
-          </a>
-        </li>
-        <li>
-          <a
-            target="_blank"
-            href="https://remix.run/tutorials/jokes"
-            rel="noreferrer"
-          >
-            Deep Dive Jokes App Tutorial
-          </a>
-        </li>
-        <li>
-          <a target="_blank" href="https://remix.run/docs" rel="noreferrer">
-            Remix Docs
-          </a>
-        </li>
-      </ul>
+    <div>
+      Statolumn Developer Documentation
+      <div dangerouslySetInnerHTML={{__html: md}} />
     </div>
   );
 }
